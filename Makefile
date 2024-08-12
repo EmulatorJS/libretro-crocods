@@ -1,4 +1,5 @@
 STATIC_LINKING=0
+EMULATORJS_THREADS ?= 0
 
 ifeq ($(platform),)
 platform = unix
@@ -177,6 +178,11 @@ else ifeq ($(platform), emscripten)
 	EXT?=bc
    TARGET := $(TARGET_NAME)_libretro_$(platform).$(EXT)
 	STATIC_LINKING = 1
+	ifeq ($(EMULATORJS_THREADS), 1)
+		LDFLAGS += -pthread
+		CFLAGS += -pthread
+		CXXFLAGS += -pthread
+	endif
 
 # Lightweight PS3 Homebrew SDK
 else ifeq ($(platform), psl1ght)
